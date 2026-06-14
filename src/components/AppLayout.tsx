@@ -19,9 +19,9 @@ const WYMIARY = [
 ]
 
 const GENERATORY = [
-  { label: "Generator zaleceń",        href: "/generator-zalecen" },
-  { label: "Generator opisów praktyk", href: "/generator-dobrej-praktyki" },
-  { label: "Word na Markdown",         href: "/generator-docx-markdown" },
+  { label: "Generator zaleceń",        href: "/generator-zalecen",        internal: true },
+  { label: "Generator opisów praktyk", href: "/generator-dobrej-praktyki", internal: true },
+  { label: "Word na Markdown",         href: "/generator-docx-markdown",   internal: true },
 ]
 
 function Dropdown({ label, items }: { label: string; items: { label: string; href: string }[] }) {
@@ -52,17 +52,28 @@ function Dropdown({ label, items }: { label: string; items: { label: string; hre
         <ul role="menu" className="absolute top-full left-0 mt-1 z-50 min-w-[220px] rounded-md border border-border bg-card shadow-lg py-1">
           {items.map(item => (
             <li key={item.href} role="none">
-              <a
-                href={item.href}
-                role="menuitem"
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:bg-muted"
-              >
-                {item.label}
-                {isExternal && <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />}
-              </a>
+              {(item as {href: string; label: string; internal?: boolean}).internal ? (
+                <Link
+                  href={item.href}
+                  role="menuitem"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:bg-muted"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  href={item.href}
+                  role="menuitem"
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:bg-muted"
+                >
+                  {item.label}
+                  {isExternal && <ExternalLink className="h-3 w-3 opacity-50" aria-hidden="true" />}
+                </a>
+              )}
             </li>
           ))}
         </ul>
@@ -162,10 +173,10 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
                 <ul className="pl-3 space-y-1 list-none">
                   {GENERATORY.map(item => (
                     <li key={item.href}>
-                      <a href={item.href} onClick={() => setMobileOpen(false)}
+                      <Link href={item.href} onClick={() => setMobileOpen(false)}
                         className="block py-1.5 text-sm text-foreground hover:text-primary">
                         {item.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
