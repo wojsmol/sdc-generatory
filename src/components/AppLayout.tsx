@@ -6,6 +6,7 @@ import { ChevronDown, ExternalLink, Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const BASE = "https://siec-dostepnosci-cyfrowej.github.io/sdc"
+const APP_URL = "https://wojsmol.github.io/sdc-generatory"
 
 const WYMIARY = [
   { label: "Komunikacja",           href: `${BASE}/docs/komunikacja/wymiar-komunikacja/o-wymiarze-komunikacja` },
@@ -91,7 +92,7 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
       <header className="bg-white border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4">
           <a
-            href={BASE}
+            href={APP_URL}
             className="flex items-center gap-3 hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded shrink-0"
             aria-label="Sieć Dostępności Cyfrowej – strona główna"
           >
