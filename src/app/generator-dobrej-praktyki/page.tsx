@@ -221,7 +221,7 @@ export default function GeneratorDobrejPraktyki() {
                         </div>
                         <Progress
                           value={opisProgress}
-                          label={`Długość opisu: ${opisLength} z wymaganych 500 znaków`}
+                          aria-label={`Długość opisu: ${opisLength} z wymaganych 500 znaków`}
                           className={opisOk ? "[&>div]:bg-green-500" : opisLength > 0 ? "[&>div]:bg-red-500" : ""}
                         />
                       </div>
