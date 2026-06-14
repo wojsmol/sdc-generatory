@@ -2,7 +2,7 @@ import type { NextConfig } from "next"
 
 const isProd = process.env.NODE_ENV === "production"
 // Zmień "generatory" na nazwę repozytorium na GitHub
-const repoName = "generatory"
+const repoName = "sdc-generatory"
 
 const nextConfig: NextConfig = {
   output: "export",
