@@ -1,0 +1,50 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: Europe/Warsaw
+    open-pull-requests-limit: 10
+    groups:
+      shadcn-radix:
+        patterns:
+          - "@radix-ui/*"
+        update-types:
+          - "minor"
+          - "patch"
+      next:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "tw-animate-css"
+          - "@tailwindcss/*"
+        update-types:
+          - "minor"
+          - "patch"
+      form:
+        patterns:
+          - "react-hook-form"
+          - "@hookform/*"
+          - "zod"
+        update-types:
+          - "minor"
+          - "patch"
+    # Major versions – osobne PR dla każdej paczki, poza grupami
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: Europe/Warsaw
