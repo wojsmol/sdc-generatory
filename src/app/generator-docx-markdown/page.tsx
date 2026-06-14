@@ -177,7 +177,7 @@ export default function GeneratorDocxMarkdown() {
                 <div id="docx-status" aria-live="polite" aria-atomic="true">
                   {loading && <p className="text-sm text-gray-500">Konwertuję plik…</p>}
                   {uploadError && <Alert variant="destructive"><AlertDescription>{uploadError}</AlertDescription></Alert>}
-                  {uploadSuccess && !loading && <Alert variant="success"><AlertDescription>✓ Plik przekonwertowany pomyślnie.</AlertDescription></Alert>}
+                  {uploadSuccess && !loading && <Alert className="border-green-200 bg-green-50 text-green-800"><AlertDescription>✓ Plik przekonwertowany pomyślnie.</AlertDescription></Alert>}
                 </div>
               </CardContent>
             </Card>

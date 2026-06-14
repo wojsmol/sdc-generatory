@@ -95,7 +95,7 @@ function LanguageWarnings({ warnings }: { warnings: string[] }) {
     // aria-live="polite" so screen reader announces after user pauses, not on every keystroke
     <div aria-live="polite" aria-atomic="true">
       {warnings.length > 0 && (
-        <Alert variant="warning">
+        <Alert className="border-amber-200 bg-amber-50 text-amber-800">
           <AlertTriangle className="h-4 w-4" aria-hidden="true" />
           <AlertDescription>
             <ul className="space-y-1 list-none p-0">
