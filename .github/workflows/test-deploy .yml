@@ -1,4 +1,4 @@
-name: test deploy
+name: CI – smoke test
 
 on:
   pull_request:
@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -26,6 +24,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
 
       - name: Build
         run: npm run build
