@@ -71,7 +71,7 @@ function generateMdx(form: FormValues, files: File[]) {
   const id = generateId(form.title || "zalecenie")
   const heading = "Zalecenie"
   const kw = keywordsToArray(form.keywords)
-  const kwMd = kw.length ? kw.map(k => `- ${k}`).join("\n") : "- dostępność cyfrowa"
+  const kwInline = kw.length ? `[${kw.join(", ")}]` : "[dostępność cyfrowa]"
 
   return `---
 id: ${id}
@@ -79,10 +79,8 @@ title: ${form.title}
 description: ${shorten(form.cel || form.zalecenie, 160)}
 sidebar_label: ${form.title}
 sidebar_position: 0
-keywords:
-${kwMd}
-tags:
-${kwMd}
+keywords: ${kwInline}
+tags: ${kwInline}
 opracowanie: ${form.autor}
 wspolpraca: ${form.wspolpraca}
 data_zgloszenia: ${form.data_zgloszenia}
