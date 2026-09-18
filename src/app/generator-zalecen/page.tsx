@@ -381,10 +381,7 @@ export default function GeneratorZalecen() {
 
           {/* ZAŁĄCZNIKI */}
           <Card>
-            <CardHeader>
-              <CardTitle>Załączniki</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div className="space-y-2">
                 <Label htmlFor="file-upload">8. Załączniki (PDF, DOCX, ZIP)</Label>
                 <p id="file-hint" className="text-xs text-muted-foreground">Dozwolone formaty: PDF, DOCX, ZIP. Maks. 5 MB na plik.</p>
