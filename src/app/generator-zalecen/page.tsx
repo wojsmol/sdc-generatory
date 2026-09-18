@@ -73,7 +73,7 @@ function generateMdx(form: FormValues, files: File[]) {
   const id = generateId(form.title || "zalecenie")
   const heading = form.typ === "dezyderat" ? "Dezyderat" : "Zalecenie"
   const kw = keywordsToArray(form.keywords)
-  const kwYaml = kw.length ? kw.map(k => `  - ${k}`).join("\n") : "  - dostępność cyfrowa"
+  const kwMd = kw.length ? kw.map(k => `- ${k}`).join("\n") : "- dostępność cyfrowa"
 
   return `---
 id: ${id}
@@ -82,9 +82,9 @@ description: ${shorten(form.cel || form.zalecenie, 160)}
 sidebar_label: ${form.title}
 sidebar_position: 0
 keywords:
-${kwYaml}
+${kwMd}
 tags:
-${kwYaml}
+${kwMd}
 opracowanie: ${form.autor}
 wspolpraca: ${form.wspolpraca}
 data_zgloszenia: ${form.data_zgloszenia}
@@ -266,7 +266,8 @@ export default function GeneratorZalecen() {
                   <FormField control={form.control} name="wspolpraca" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Współpraca</FormLabel>
-                      <FormControl><Input placeholder="Imiona i nazwiska współautorów" {...field} /></FormControl>
+                      <FormDescription>Imiona i nazwiska współautorów oddzielone przecinkami</FormDescription>
+                      <FormControl><Input {...field} /></FormControl>
                     </FormItem>
                   )} />
 
@@ -380,7 +381,7 @@ export default function GeneratorZalecen() {
           {/* HISTORIA I ZAŁĄCZNIKI */}
           <Card>
             <CardHeader>
-              <CardTitle>Historia i załączniki</CardTitle>
+              <CardTitle>Załączniki</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
 
