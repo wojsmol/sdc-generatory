@@ -56,33 +56,33 @@
    */
   --sdc-primary: oklch(0.3190 0.1203 336.147); /* #551049 */
 
-  /* Ciemny motyw jako domyślny */
-  --background:         oklch(0.22 0.005 260);   /* ciemne tło – lekko chłodne */
-  --foreground:         oklch(0.95 0 0);          /* jasny tekst */
+  /* Tło: #05000A, sekcje/karty: #150226 */
+  --background:         oklch(0.0875 0.0438 311.990); /* #05000A */
+  --foreground:         oklch(0.95 0 0);               /* biały tekst: 20.8:1 ✓ AAA */
 
-  --card:               oklch(0.26 0.005 260);   /* karty – nieco jaśniejsze od tła */
+  --card:               oklch(0.1604 0.0743 304.768); /* #150226 */
   --card-foreground:    oklch(0.95 0 0);
 
-  --popover:            oklch(0.26 0.005 260);
+  --popover:            oklch(0.1604 0.0743 304.768);
   --popover-foreground: oklch(0.95 0 0);
 
   /* Primary = SDC #551049 – przyciski, akcenty */
   --primary:            var(--sdc-primary);
   --primary-foreground: oklch(1 0 0);             /* biały tekst na primary: 13.5:1 ✓ AAA */
 
-  --secondary:          oklch(0.30 0.005 260);
+  --secondary:          oklch(0.20 0.05 305);
   --secondary-foreground: oklch(0.95 0 0);
 
-  --muted:              oklch(0.30 0.005 260);
-  --muted-foreground:   oklch(0.89 0 0);          /* gray-200 equiv: 9.9:1 na tle ✓ AAA */
+  --muted:              oklch(0.20 0.05 305);
+  --muted-foreground:   oklch(0.89 0 0);          /* gray-200: 16.8:1 na tle ✓ AAA */
 
-  --accent:             oklch(0.32 0.008 260);
+  --accent:             oklch(0.22 0.06 305);
   --accent-foreground:  oklch(0.95 0 0);
 
   --destructive:        oklch(0.577 0.245 27.325);
 
-  --border:             oklch(0.35 0.005 260);    /* widoczna ramka na ciemnym tle */
-  --input:              oklch(0.32 0.005 260);
+  --border:             oklch(0.28 0.06 305);
+  --input:              oklch(0.22 0.06 305);
   --ring:               var(--sdc-primary);
 
   --chart-1: oklch(0.87 0 0);
@@ -93,13 +93,13 @@
 
   --radius: 0.625rem;
 
-  --sidebar:                oklch(0.20 0.005 260);
+  --sidebar:                oklch(0.0875 0.0438 311.990); /* = background, header ciemny */
   --sidebar-foreground:     oklch(0.95 0 0);
   --sidebar-primary:        var(--sdc-primary);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent:         oklch(0.28 0.005 260);
+  --sidebar-accent:         oklch(0.1604 0.0743 304.768);
   --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border:         oklch(0.32 0.005 260);
+  --sidebar-border:         oklch(0.28 0.06 305);
   --sidebar-ring:           var(--sdc-primary);
 }
 
