@@ -36,7 +36,6 @@ function keywordsToArray(text: string): string[] {
 
 const schema = z.object({
   title: z.string().min(1, "Tytuł jest wymagany."),
-  typ: z.enum(["zalecenie", "dezyderat"]),
   wymiar: z.string().min(1, "Wymiar jest wymagany."),
   keywords: z.string(),
   cel: z.string().min(1, "Cel zalecenia jest wymagany."),
@@ -49,7 +48,6 @@ const schema = z.object({
   autor: z.string().min(1, "Autor/ka opracowania jest wymagana."),
   wspolpraca: z.string(),
   data_zgloszenia: z.string().min(1, "Data zgłoszenia jest wymagana."),
-  kontakt: z.string(),
 })
 
 type FormValues = z.infer<typeof schema>
@@ -57,10 +55,10 @@ type FormValues = z.infer<typeof schema>
 const today = formatDate(new Date())
 
 const defaultValues: FormValues = {
-  title: "", typ: "zalecenie", wymiar: "", keywords: "", cel: "", zalecenie: "",
+  title: "", wymiar: "", keywords: "", cel: "", zalecenie: "",
   rekomendacje: "", uzasadnienie: "", podstawyPrawne: "",
   zrodla: "", powiazania: "", autor: "",
-  wspolpraca: "", data_zgloszenia: today, kontakt: "",
+  wspolpraca: "", data_zgloszenia: today,
 }
 
 function shorten(text: string, max: number) {
@@ -71,7 +69,7 @@ function shorten(text: string, max: number) {
 
 function generateMdx(form: FormValues, files: File[]) {
   const id = generateId(form.title || "zalecenie")
-  const heading = form.typ === "dezyderat" ? "Dezyderat" : "Zalecenie"
+  const heading = "Zalecenie"
   const kw = keywordsToArray(form.keywords)
   const kwMd = kw.length ? kw.map(k => `- ${k}`).join("\n") : "- dostępność cyfrowa"
 
@@ -213,21 +211,6 @@ export default function GeneratorZalecen() {
                     </FormItem>
                   )} />
 
-                  <FormField control={form.control} name="typ" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Typ dokumentu <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger><SelectValue /></SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="zalecenie">Zalecenie</SelectItem>
-                          <SelectItem value="dezyderat">Dezyderat</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
 
                   <FormField control={form.control} name="wymiar" render={({ field }) => (
                     <FormItem>
@@ -281,12 +264,6 @@ export default function GeneratorZalecen() {
                     </FormItem>
                   )} />
 
-                  <FormField control={form.control} name="kontakt" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Kontakt</FormLabel>
-                      <FormControl><Input autoComplete="email" {...field} /></FormControl>
-                    </FormItem>
-                  )} />
                 </div>
               </div>
             </CardContent>
