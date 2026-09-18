@@ -100,7 +100,7 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
         Przejdź do treści głównej
       </a>
 
-      <header className="bg-white border-b border-border">
+      <header className="bg-sidebar border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4">
           <a
             href={APP_URL}
@@ -146,7 +146,7 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
 
         {/* Mobile nav */}
         {mobileOpen && (
-          <nav id="mobile-nav" aria-label="Nawigacja mobilna" className="border-t border-border bg-white">
+          <nav id="mobile-nav" aria-label="Nawigacja mobilna" className="border-t border-border bg-sidebar">
             <ul className="max-w-6xl mx-auto px-4 pb-4 space-y-1 list-none">
               <li>
                 <a href={`${BASE}/docs/o-sieci/projekt/o-projekcie-sdc`}
@@ -201,7 +201,7 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
 
       <main id="main-content" className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6" tabIndex={-1}>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary">{title}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{title}</h1>
           {description && <p className="mt-2 text-sm text-muted-foreground">{description}</p>}
         </div>
         {children}
