@@ -21,10 +21,23 @@ import { WYMIARY } from "@/lib/constants"
 
 const STORAGE_KEY = "zalecenieForm"
 
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("pl-PL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).replace(" ", " ") + " r."
+}
+
+function keywordsToArray(text: string): string[] {
+  return text.split(/[\n,]+/).map(k => k.trim()).filter(Boolean)
+}
+
 const schema = z.object({
   title: z.string().min(1, "Tytuł jest wymagany."),
   typ: z.enum(["zalecenie", "dezyderat"]),
   wymiar: z.string().min(1, "Wymiar jest wymagany."),
+  keywords: z.string(),
   cel: z.string().min(1, "Cel zalecenia jest wymagany."),
   zalecenie: z.string().min(1, "Treść zalecenia jest wymagana."),
   rekomendacje: z.string(),
@@ -34,15 +47,20 @@ const schema = z.object({
   powiazania: z.string(),
   historia: z.string(),
   autor: z.string().min(1, "Autor/ka opracowania jest wymagana."),
+  wspolpraca: z.string(),
+  data_zgloszenia: z.string().min(1, "Data zgłoszenia jest wymagana."),
   kontakt: z.string(),
 })
 
 type FormValues = z.infer<typeof schema>
 
+const today = formatDate(new Date())
+
 const defaultValues: FormValues = {
-  title: "", typ: "zalecenie", wymiar: "", cel: "", zalecenie: "",
+  title: "", typ: "zalecenie", wymiar: "", keywords: "", cel: "", zalecenie: "",
   rekomendacje: "", uzasadnienie: "", podstawyPrawne: "",
-  zrodla: "", powiazania: "", historia: "", autor: "", kontakt: "",
+  zrodla: "", powiazania: "", historia: "", autor: "",
+  wspolpraca: "", data_zgloszenia: today, kontakt: "",
 }
 
 function shorten(text: string, max: number) {
@@ -54,15 +72,24 @@ function shorten(text: string, max: number) {
 function generateMdx(form: FormValues, files: File[]) {
   const id = generateId(form.title || "zalecenie")
   const heading = form.typ === "dezyderat" ? "Dezyderat" : "Zalecenie"
+  const kw = keywordsToArray(form.keywords)
+  const kwYaml = kw.length ? kw.map(k => `  - ${k}`).join("\n") : "  - dostępność cyfrowa"
+
   return `---
 id: ${id}
 title: ${form.title}
 description: ${shorten(form.cel || form.zalecenie, 160)}
 sidebar_label: ${form.title}
-sidebar_position: 999
-typ: ${form.typ}
-wymiar: ${form.wymiar}
+sidebar_position: 0
+keywords:
+${kwYaml}
+tags:
+${kwYaml}
 opracowanie: ${form.autor}
+wspolpraca: ${form.wspolpraca}
+data_zgloszenia: ${form.data_zgloszenia}
+ostatnia_aktualizacja: ${form.data_zgloszenia}
+wersja_robocza: true
 ---
 
 # ${heading}: ${form.title}
@@ -175,7 +202,7 @@ export default function GeneratorZalecen() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="space-y-6">
 
-          {/* SEKCJA 1 – Dane dokumentu */}
+          {/* DANE DOKUMENTU */}
           <Card>
             <CardHeader>
               <CardTitle>Dane dokumentu</CardTitle>
@@ -217,6 +244,14 @@ export default function GeneratorZalecen() {
                       <FormMessage />
                     </FormItem>
                   )} />
+
+                  <FormField control={form.control} name="keywords" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Słowa kluczowe</FormLabel>
+                      <FormDescription>Wpisz słowa oddzielone przecinkami lub każde w nowej linii. Zostaną użyte jako keywords i tags.</FormDescription>
+                      <FormControl><Textarea rows={3} placeholder={"dostępność cyfrowa\nzarządzanie\nWCAG"} {...field} /></FormControl>
+                    </FormItem>
+                  )} />
                 </div>
 
                 <div className="space-y-4">
@@ -224,6 +259,22 @@ export default function GeneratorZalecen() {
                     <FormItem>
                       <FormLabel>Autor/ka opracowania <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
                       <FormControl><Input placeholder="Imię i nazwisko" autoComplete="name" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+
+                  <FormField control={form.control} name="wspolpraca" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Współpraca</FormLabel>
+                      <FormControl><Input placeholder="Imiona i nazwiska współautorów" {...field} /></FormControl>
+                    </FormItem>
+                  )} />
+
+                  <FormField control={form.control} name="data_zgloszenia" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data zgłoszenia <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
+                      <FormDescription>Format: 6 września 2026 r.</FormDescription>
+                      <FormControl><Input placeholder={today} {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -239,7 +290,7 @@ export default function GeneratorZalecen() {
             </CardContent>
           </Card>
 
-          {/* SEKCJA 2 – Treść zalecenia */}
+          {/* TREŚĆ ZALECENIA */}
           <Card>
             <CardHeader>
               <CardTitle>Treść zalecenia</CardTitle>
@@ -288,19 +339,21 @@ export default function GeneratorZalecen() {
 
               <Separator />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField control={form.control} name="uzasadnienie" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>4. Uzasadnienie</FormLabel>
-                    <FormDescription>Wyjaśnij, dlaczego rozwiązanie problemu jest potrzebne i dlaczego proponowany sposób działania jest zasadny.</FormDescription>
-                    <FormControl><Textarea rows={6} {...field} /></FormControl>
-                  </FormItem>
-                )} />
+              <FormField control={form.control} name="uzasadnienie" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>4. Uzasadnienie</FormLabel>
+                  <FormDescription>Wyjaśnij, dlaczego rozwiązanie problemu jest potrzebne i dlaczego proponowany sposób działania jest zasadny.</FormDescription>
+                  <FormControl><Textarea rows={8} {...field} /></FormControl>
+                </FormItem>
+              )} />
 
+              <Separator />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="podstawyPrawne" render={({ field }) => (
                   <FormItem>
                     <FormLabel>5. Podstawy prawne</FormLabel>
-                    <FormDescription>Wymień przepisy i akty prawne uwzględnione przy opracowaniu zalecenia. Wpisz każdą pozycję w osobnym wierszu.</FormDescription>
+                    <FormDescription>Wymień przepisy i akty prawne. Wpisz każdą pozycję w osobnym wierszu.</FormDescription>
                     <FormControl><Textarea rows={6} {...field} /></FormControl>
                   </FormItem>
                 )} />
@@ -308,7 +361,7 @@ export default function GeneratorZalecen() {
                 <FormField control={form.control} name="zrodla" render={({ field }) => (
                   <FormItem>
                     <FormLabel>6. Źródła i opracowania</FormLabel>
-                    <FormDescription>Wymień publikacje i materiały wykorzystane przy opracowaniu lub przydatne przy stosowaniu zalecenia. Wpisz każdą pozycję w osobnym wierszu.</FormDescription>
+                    <FormDescription>Wymień publikacje i materiały. Wpisz każdą pozycję w osobnym wierszu.</FormDescription>
                     <FormControl><Textarea rows={6} {...field} /></FormControl>
                   </FormItem>
                 )} />
@@ -324,7 +377,7 @@ export default function GeneratorZalecen() {
             </CardContent>
           </Card>
 
-          {/* SEKCJA 3 – Historia i załączniki */}
+          {/* HISTORIA I ZAŁĄCZNIKI */}
           <Card>
             <CardHeader>
               <CardTitle>Historia i załączniki</CardTitle>
@@ -334,7 +387,7 @@ export default function GeneratorZalecen() {
               <FormField control={form.control} name="historia" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Historia wersji</FormLabel>
-                  <FormDescription>Wpisz każdy wpis w osobnym wierszu, np. „Wersja 0.1 – projekt wstępny, 28 lipca 2025".</FormDescription>
+                  <FormDescription>Wpisz każdy wpis w osobnym wierszu, np. „Wersja 0.1 – projekt wstępny, 6 września 2026 r."</FormDescription>
                   <FormControl><Textarea rows={3} {...field} /></FormControl>
                 </FormItem>
               )} />
