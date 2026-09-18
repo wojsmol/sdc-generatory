@@ -35,6 +35,7 @@ function keywordsToArray(text: string): string[] {
 
 const schema = z.object({
   title: z.string().min(1, "Tytuł jest wymagany."),
+  sidebar_label: z.string(),
   keywords: z.string(),
   cel: z.string().min(1, "Cel zalecenia jest wymagany."),
   zalecenie: z.string().min(1, "Treść zalecenia jest wymagana."),
@@ -53,7 +54,7 @@ type FormValues = z.infer<typeof schema>
 const today = formatDate(new Date())
 
 const defaultValues: FormValues = {
-  title: "", keywords: "", cel: "", zalecenie: "",
+  title: "", sidebar_label: "", keywords: "", cel: "", zalecenie: "",
   rekomendacje: "", uzasadnienie: "", podstawyPrawne: "",
   zrodla: "", powiazania: "", autor: "",
   wspolpraca: "", data_zgloszenia: today,
@@ -75,7 +76,7 @@ function generateMdx(form: FormValues, files: File[]) {
 id: ${id}
 title: ${form.title}
 description: ${shorten(form.cel || form.zalecenie, 160)}
-sidebar_label: ${form.title}
+sidebar_label: ${form.sidebar_label || form.title}
 sidebar_position: 0
 keywords: ${kwInline}
 tags: ${kwInline}
@@ -204,6 +205,14 @@ export default function GeneratorZalecen() {
                       <FormLabel>Tytuł <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
                       <FormControl><Input autoComplete="off" {...field} /></FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )} />
+
+                  <FormField control={form.control} name="sidebar_label" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Krótki tytuł</FormLabel>
+                      <FormDescription>Etykieta w menu bocznym (sidebar_label). Jeśli puste, użyty zostanie tytuł.</FormDescription>
+                      <FormControl><Input autoComplete="off" {...field} /></FormControl>
                     </FormItem>
                   )} />
 
