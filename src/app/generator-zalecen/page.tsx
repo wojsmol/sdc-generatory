@@ -36,6 +36,7 @@ function keywordsToArray(text: string): string[] {
 const schema = z.object({
   title: z.string().min(1, "Tytuł jest wymagany."),
   sidebar_label: z.string(),
+  description: z.string(),
   keywords: z.string(),
   cel: z.string().min(1, "Cel zalecenia jest wymagany."),
   zalecenie: z.string().min(1, "Treść zalecenia jest wymagana."),
@@ -54,16 +55,10 @@ type FormValues = z.infer<typeof schema>
 const today = formatDate(new Date())
 
 const defaultValues: FormValues = {
-  title: "", sidebar_label: "", keywords: "", cel: "", zalecenie: "",
+  title: "", sidebar_label: "", description: "", keywords: "", cel: "", zalecenie: "",
   rekomendacje: "", uzasadnienie: "", podstawyPrawne: "",
   zrodla: "", powiazania: "", autor: "",
   wspolpraca: "", data_zgloszenia: today,
-}
-
-function shorten(text: string, max: number) {
-  const t = text.trim()
-  if (!t) return "Zalecenie dotyczące zapewniania dostępności cyfrowej"
-  return t.length <= max ? t : t.substring(0, max - 3).trimEnd() + "..."
 }
 
 function generateMdx(form: FormValues, files: File[]) {
@@ -75,7 +70,7 @@ function generateMdx(form: FormValues, files: File[]) {
   return `---
 id: ${id}
 title: ${form.title}
-description: ${shorten(form.cel || form.zalecenie, 160)}
+description: ${form.description}
 sidebar_label: ${form.sidebar_label || form.title}
 sidebar_position: 0
 keywords: ${kwInline}
@@ -213,6 +208,14 @@ export default function GeneratorZalecen() {
                       <FormLabel>Krótki tytuł</FormLabel>
                       <FormDescription>Etykieta w menu bocznym (sidebar_label). Jeśli puste, użyty zostanie tytuł.</FormDescription>
                       <FormControl><Input autoComplete="off" {...field} /></FormControl>
+                    </FormItem>
+                  )} />
+
+                  <FormField control={form.control} name="description" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Opis</FormLabel>
+                      <FormDescription>Krótki opis zalecenia (description). Widoczny w wynikach wyszukiwania i podglądach.</FormDescription>
+                      <FormControl><Textarea rows={2} {...field} /></FormControl>
                     </FormItem>
                   )} />
 
