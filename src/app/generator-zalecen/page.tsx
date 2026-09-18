@@ -432,7 +432,6 @@ export default function GeneratorZalecen() {
               <Separator />
 
               <div className="flex flex-wrap gap-2 sm:gap-3">
-                <Button type="submit">↓ Pobierz ZIP (MDX + załączniki)</Button>
                 <Button
                   type="button"
                   variant="outline"
@@ -445,7 +444,7 @@ export default function GeneratorZalecen() {
                 <Button
                   type="button"
                   variant="ghost"
-                  className="ml-auto text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground"
                   onClick={() => {
                     if (confirm("Czy na pewno chcesz wyczyścić formularz?")) {
                       form.reset(defaultValues)
@@ -456,6 +455,7 @@ export default function GeneratorZalecen() {
                 >
                   Wyczyść formularz
                 </Button>
+                <Button type="submit">↓ Pobierz ZIP (MDX + załączniki)</Button>
               </div>
             </CardContent>
           </Card>
