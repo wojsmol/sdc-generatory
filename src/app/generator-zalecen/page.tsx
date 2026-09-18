@@ -18,7 +18,6 @@ import { Label } from "@/components/ui/label"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { generateId, linesToList, analyzeNeutralLanguage, validateFiles } from "@/lib/fileUtils"
-import { WYMIARY } from "@/lib/constants"
 
 const STORAGE_KEY = "zalecenieForm"
 
@@ -36,7 +35,6 @@ function keywordsToArray(text: string): string[] {
 
 const schema = z.object({
   title: z.string().min(1, "Tytuł jest wymagany."),
-  wymiar: z.string().min(1, "Wymiar jest wymagany."),
   keywords: z.string(),
   cel: z.string().min(1, "Cel zalecenia jest wymagany."),
   zalecenie: z.string().min(1, "Treść zalecenia jest wymagana."),
@@ -55,7 +53,7 @@ type FormValues = z.infer<typeof schema>
 const today = formatDate(new Date())
 
 const defaultValues: FormValues = {
-  title: "", wymiar: "", keywords: "", cel: "", zalecenie: "",
+  title: "", keywords: "", cel: "", zalecenie: "",
   rekomendacje: "", uzasadnienie: "", podstawyPrawne: "",
   zrodla: "", powiazania: "", autor: "",
   wspolpraca: "", data_zgloszenia: today,
@@ -210,20 +208,6 @@ export default function GeneratorZalecen() {
                   )} />
 
 
-                  <FormField control={form.control} name="wymiar" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Wymiar <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger><SelectValue placeholder="-- wybierz wymiar --" /></SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {WYMIARY.map(w => <SelectItem key={w} value={w}>{w}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
 
                   <FormField control={form.control} name="keywords" render={({ field }) => (
                     <FormItem>
