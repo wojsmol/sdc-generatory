@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { AlertTriangle } from "lucide-react"
+import { AlertTriangle, X } from "lucide-react"
 
 import { AppLayout, MdxPreview } from "@/components/AppLayout"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
+import { Label } from "@/components/ui/label"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { generateId, linesToList, analyzeNeutralLanguage, validateFiles } from "@/lib/fileUtils"
@@ -26,7 +27,7 @@ function formatDate(date: Date): string {
     day: "numeric",
     month: "long",
     year: "numeric",
-  }).replace(" ", " ") + " r."
+  }) + " r."
 }
 
 function keywordsToArray(text: string): string[] {
@@ -45,7 +46,6 @@ const schema = z.object({
   podstawyPrawne: z.string(),
   zrodla: z.string(),
   powiazania: z.string(),
-  historia: z.string(),
   autor: z.string().min(1, "Autor/ka opracowania jest wymagana."),
   wspolpraca: z.string(),
   data_zgloszenia: z.string().min(1, "Data zgłoszenia jest wymagana."),
@@ -59,7 +59,7 @@ const today = formatDate(new Date())
 const defaultValues: FormValues = {
   title: "", typ: "zalecenie", wymiar: "", keywords: "", cel: "", zalecenie: "",
   rekomendacje: "", uzasadnienie: "", podstawyPrawne: "",
-  zrodla: "", powiazania: "", historia: "", autor: "",
+  zrodla: "", powiazania: "", autor: "",
   wspolpraca: "", data_zgloszenia: today, kontakt: "",
 }
 
@@ -117,11 +117,6 @@ ${linesToList(form.powiazania, "_Brak powiązań._")}
 
 ## 8. Załączniki
 ${files.length ? files.map(f => "- " + f.name).join("\n") : "_Brak załączników._"}
-
----
-
-## Historia wersji
-${linesToList(form.historia, "- Wersja 0.1 – projekt wstępny")}
 `
 }
 
@@ -213,7 +208,7 @@ export default function GeneratorZalecen() {
                   <FormField control={form.control} name="title" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tytuł <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
-                      <FormControl><Input placeholder="Tytuł zalecenia" autoComplete="off" {...field} /></FormControl>
+                      <FormControl><Input autoComplete="off" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -222,7 +217,9 @@ export default function GeneratorZalecen() {
                     <FormItem>
                       <FormLabel>Typ dokumentu <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl><SelectTrigger aria-label="Wybierz typ dokumentu"><SelectValue /></SelectTrigger></FormControl>
+                        <FormControl>
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                        </FormControl>
                         <SelectContent>
                           <SelectItem value="zalecenie">Zalecenie</SelectItem>
                           <SelectItem value="dezyderat">Dezyderat</SelectItem>
@@ -236,7 +233,9 @@ export default function GeneratorZalecen() {
                     <FormItem>
                       <FormLabel>Wymiar <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl><SelectTrigger aria-label="Wybierz wymiar"><SelectValue placeholder="-- wybierz wymiar --" /></SelectTrigger></FormControl>
+                        <FormControl>
+                          <SelectTrigger><SelectValue placeholder="-- wybierz wymiar --" /></SelectTrigger>
+                        </FormControl>
                         <SelectContent>
                           {WYMIARY.map(w => <SelectItem key={w} value={w}>{w}</SelectItem>)}
                         </SelectContent>
@@ -249,7 +248,9 @@ export default function GeneratorZalecen() {
                     <FormItem>
                       <FormLabel>Słowa kluczowe</FormLabel>
                       <FormDescription>Wpisz słowa oddzielone przecinkami lub każde w nowej linii. Zostaną użyte jako keywords i tags.</FormDescription>
-                      <FormControl><Textarea rows={3} placeholder={"dostępność cyfrowa\nzarządzanie\nWCAG"} {...field} /></FormControl>
+                      <FormControl>
+                        <Textarea rows={3} placeholder={"dostępność cyfrowa\nzarządzanie\nWCAG"} {...field} />
+                      </FormControl>
                     </FormItem>
                   )} />
                 </div>
@@ -258,7 +259,7 @@ export default function GeneratorZalecen() {
                   <FormField control={form.control} name="autor" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Autor/ka opracowania <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
-                      <FormControl><Input placeholder="Imię i nazwisko" autoComplete="name" {...field} /></FormControl>
+                      <FormControl><Input autoComplete="name" {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -275,7 +276,7 @@ export default function GeneratorZalecen() {
                     <FormItem>
                       <FormLabel>Data zgłoszenia <span aria-hidden="true">*</span><span className="sr-only">(wymagane)</span></FormLabel>
                       <FormDescription>Format: 6 września 2026 r.</FormDescription>
-                      <FormControl><Input placeholder={today} {...field} /></FormControl>
+                      <FormControl><Input {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -283,7 +284,7 @@ export default function GeneratorZalecen() {
                   <FormField control={form.control} name="kontakt" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Kontakt</FormLabel>
-                      <FormControl><Input placeholder="E-mail lub telefon" autoComplete="email" {...field} /></FormControl>
+                      <FormControl><Input autoComplete="email" {...field} /></FormControl>
                     </FormItem>
                   )} />
                 </div>
@@ -378,56 +379,60 @@ export default function GeneratorZalecen() {
             </CardContent>
           </Card>
 
-          {/* HISTORIA I ZAŁĄCZNIKI */}
+          {/* ZAŁĄCZNIKI */}
           <Card>
             <CardHeader>
               <CardTitle>Załączniki</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-
-              <FormField control={form.control} name="historia" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Historia wersji</FormLabel>
-                  <FormDescription>Wpisz każdy wpis w osobnym wierszu, np. „Wersja 0.1 – projekt wstępny, 6 września 2026 r."</FormDescription>
-                  <FormControl><Textarea rows={3} {...field} /></FormControl>
-                </FormItem>
-              )} />
-
-              <Separator />
-
-              <fieldset className="space-y-3">
-                <legend className="text-sm font-medium text-gray-700">8. Załączniki (PDF, DOCX, ZIP)</legend>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="file-upload">8. Załączniki (PDF, DOCX, ZIP)</Label>
+                <p id="file-hint" className="text-xs text-muted-foreground">Dozwolone formaty: PDF, DOCX, ZIP. Maks. 5 MB na plik.</p>
                 <Input
+                  id="file-upload"
                   type="file"
                   multiple
                   onChange={handleFileChange}
                   aria-describedby="file-hint"
                 />
-                <p id="file-hint" className="text-xs text-gray-500">Dozwolone formaty: PDF, DOCX, ZIP. Maks. 5 MB na plik.</p>
-                {Object.entries(fileErrors).map(([k, m]) => (
-                  <p className="text-xs text-red-600" role="alert" key={k}>{m}</p>
-                ))}
-                {files.length > 0 && (
-                  <ul className="space-y-1" aria-label="Dodane załączniki">
-                    {files.map(f => (
-                      <li key={f.name} className="flex items-center justify-between rounded-md bg-gray-50 px-3 py-2 text-sm">
-                        <span className="flex items-center gap-2">
-                          <Badge variant="secondary" aria-hidden="true">{f.name.split(".").pop()?.toUpperCase()}</Badge>
-                          {f.name}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => removeFile(f.name)}
-                          aria-label={`Usuń załącznik: ${f.name}`}
-                          className="text-red-600 text-xs hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 rounded"
-                        >
-                          Usuń
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </fieldset>
+              </div>
+
+              {Object.entries(fileErrors).length > 0 && (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    <ul className="list-none space-y-1">
+                      {Object.entries(fileErrors).map(([k, m]) => (
+                        <li key={k}>{m}</li>
+                      ))}
+                    </ul>
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {files.length > 0 && (
+                <ul className="space-y-1" aria-label="Dodane załączniki">
+                  {files.map(f => (
+                    <li key={f.name} className="flex items-center justify-between rounded-md bg-muted px-3 py-2 text-sm">
+                      <span className="flex items-center gap-2">
+                        <Badge variant="secondary" aria-hidden="true">{f.name.split(".").pop()?.toUpperCase()}</Badge>
+                        {f.name}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeFile(f.name)}
+                        aria-label={`Usuń załącznik: ${f.name}`}
+                        className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                      >
+                        <X className="h-4 w-4" aria-hidden="true" />
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <Separator />
 
               <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Button type="submit">↓ Pobierz ZIP (MDX + załączniki)</Button>
@@ -443,8 +448,14 @@ export default function GeneratorZalecen() {
                 <Button
                   type="button"
                   variant="ghost"
-                  className="ml-auto text-gray-600 hover:text-gray-900"
-                  onClick={() => { if (confirm("Czy na pewno chcesz wyczyścić formularz?")) { form.reset(defaultValues); setFiles([]); localStorage.removeItem(STORAGE_KEY) } }}
+                  className="ml-auto text-muted-foreground hover:text-foreground"
+                  onClick={() => {
+                    if (confirm("Czy na pewno chcesz wyczyścić formularz?")) {
+                      form.reset(defaultValues)
+                      setFiles([])
+                      localStorage.removeItem(STORAGE_KEY)
+                    }
+                  }}
                 >
                   Wyczyść formularz
                 </Button>
