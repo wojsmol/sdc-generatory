@@ -415,7 +415,7 @@ export default function GeneratorZalecen() {
                 <Button
                   type="button"
                   variant="ghost"
-                  className="text-muted-foreground hover:text-foreground"
+                  className=""
                   onClick={() => {
                     if (confirm("Czy na pewno chcesz wyczyścić formularz?")) {
                       form.reset(defaultValues)
