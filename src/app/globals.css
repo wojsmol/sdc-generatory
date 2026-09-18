@@ -56,14 +56,14 @@
    */
   --sdc-primary: oklch(0.3190 0.1203 336.147); /* #551049 */
 
-  /* Tło: #05000A, sekcje/karty: #150226 */
+  /* Tło: #05000A, sekcje/karty: #140029 */
   --background:         oklch(0.0875 0.0438 311.990); /* #05000A */
   --foreground:         oklch(0.95 0 0);               /* biały tekst: 20.8:1 ✓ AAA */
 
-  --card:               oklch(0.1604 0.0743 304.768); /* #150226 */
+  --card:               oklch(0.1570 0.0830 301.703); /* #140029 */
   --card-foreground:    oklch(0.95 0 0);
 
-  --popover:            oklch(0.1604 0.0743 304.768);
+  --popover:            oklch(0.1570 0.0830 301.703);
   --popover-foreground: oklch(0.95 0 0);
 
   /* Primary = SDC #551049 – przyciski, akcenty */
@@ -97,7 +97,7 @@
   --sidebar-foreground:     oklch(0.95 0 0);
   --sidebar-primary:        var(--sdc-primary);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent:         oklch(0.1604 0.0743 304.768);
+  --sidebar-accent:         oklch(0.1570 0.0830 301.703);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border:         oklch(0.28 0.06 305);
   --sidebar-ring:           var(--sdc-primary);
