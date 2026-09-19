@@ -45,7 +45,7 @@ function Dropdown({ label, items }: { label: string; items: { label: string; hre
         onClick={() => setOpen(p => !p)}
         aria-expanded={open}
         aria-haspopup="true"
-        className="flex items-center gap-1 text-sm text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1"
+        className="flex items-center gap-1 text-sm text-foreground hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1"
       >
         {label}
         <ChevronDown className={cn("h-3 w-3 transition-transform", open && "rotate-180")} aria-hidden="true" />
@@ -117,7 +117,7 @@ function ThemeToggle() {
       onClick={cycle}
       aria-label={label}
       title={label}
-      className="h-9 w-9 text-foreground hover:text-primary"
+      className="h-9 w-9 text-foreground hover:opacity-70"
     >
       <Icon className="h-5 w-5" aria-hidden="true" />
     </Button>
@@ -159,17 +159,17 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
           {/* Desktop nav */}
           <nav aria-label="Główna nawigacja" className="hidden md:flex items-center gap-1 flex-wrap">
             <a href={`${BASE}/docs/o-sieci/projekt/o-projekcie-sdc`}
-              className="text-sm text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1">
+              className="text-sm text-foreground hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1">
               O Sieci
             </a>
             <Dropdown label="Wymiary" items={WYMIARY} />
             <Dropdown label="Generatory" items={GENERATORY} />
             <a href={`${BASE}/blog`}
-              className="text-sm text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1">
+              className="text-sm text-foreground hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1">
               Blog
             </a>
             <a href="https://github.com/Siec-Dostepnosci-Cyfrowej/sdc" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 text-sm text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1">
+              className="flex items-center gap-1 text-sm text-foreground hover:opacity-70 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-1">
               GitHub <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </a>
           </nav>
