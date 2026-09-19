@@ -181,3 +181,85 @@
     @apply font-sans;
   }
 }
+
+/* ===== PREFERS-REDUCED-MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== PREFERS-REDUCED-TRANSPARENCY ===== */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --ring: oklch(0.2319 0.1147 300.981);
+  }
+  /* Usuń przezroczystości z outline i overlay */
+  * {
+    opacity: 1 !important;
+  }
+  [aria-disabled="true"],
+  :disabled {
+    opacity: 0.5 !important;
+  }
+}
+
+/* ===== FORCED-COLORS (Windows High Contrast Mode) ===== */
+@media (forced-colors: active) {
+  :root {
+    --primary:            ButtonText;
+    --primary-foreground: ButtonFace;
+    --background:         Canvas;
+    --foreground:         CanvasText;
+    --card:               Canvas;
+    --card-foreground:    CanvasText;
+    --border:             ButtonText;
+    --input:              Field;
+    --ring:               Highlight;
+    --muted-foreground:   CanvasText;
+  }
+
+  /* Przyciski muszą używać systemowych kolorów */
+  button, [role="button"] {
+    forced-color-adjust: auto;
+  }
+
+  /* Linki nawigacyjne */
+  a {
+    color: LinkText;
+  }
+  a:visited {
+    color: VisitedText;
+  }
+  a:hover, a:focus {
+    color: Highlight;
+  }
+
+  /* Focus ring musi być widoczny */
+  :focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* Separator */
+  hr, [role="separator"] {
+    border-color: ButtonText;
+  }
+}
+
+/* ===== PREFERS-CONTRAST: LESS ===== */
+@media (prefers-contrast: less) {
+  :root {
+    --border:           oklch(0.92 0.01 305);
+    --muted-foreground: oklch(0.55 0.03 300);
+  }
+  .dark {
+    --border:           oklch(0.25 0.07 303);
+    --muted-foreground: oklch(0.72 0 0);
+  }
+}
