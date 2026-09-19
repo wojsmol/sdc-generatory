@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { ThemeProvider } from "@/components/ThemeProvider"
 
 export const metadata: Metadata = {
   title: "SDC – Sieć Dostępności Cyfrowej",
@@ -13,9 +14,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pl">
+    <html lang="pl" suppressHydrationWarning>
       <body>
-        <TooltipProvider>{children}</TooltipProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

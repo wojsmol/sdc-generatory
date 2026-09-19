@@ -52,46 +52,78 @@
  * Paleta SDC Generatory
  * Źródło: custom.css Docusaurus SDC
  *
- * Tryb ciemny (domyślny):
- *   bg:      #05000A  – główne tło
- *   surface: #0d0119  – navbar SDC
- *   card:    #140029  – sekcje/karty
- *   primary: #280449  – przycisk CTA (ciemny fiolet, biały tekst 17.4:1 ✓ AAA)
- *   tekst:   #e3e3e3  – SDC content color
- *
- * Problem oryginalnego SDC który tu naprawiamy:
- *   - light: primary #280449 OK, ale secondary/muted za jasne na białym
- *   - dark:  primary #E2C7F4 (lawendowy) nie nadaje się na przycisk – używamy #280449
- *   - b&w:   brak rozróżnienia – kontrast border+shadow rozwiązuje
+ * Primary #280449 – ciemny fiolet SDC (biały tekst: 17.4:1 ✓ AAA)
+ * Tryb ciemny: bg #05000A, navbar #0d0119, karty #140029
+ * Tryb jasny: bg biały, karty jasnofioletowe
  */
 
+/* ===== TRYB JASNY ===== */
 :root {
-  /* === TRYB CIEMNY JAKO DOMYŚLNY === */
+  --background:         oklch(1 0 0);
+  --foreground:         oklch(0.12 0.04 300);       /* ciemny fiolet zamiast czerni */
 
-  /* Tła – zgodne z SDC dark */
+  --card:               oklch(0.97 0.012 305);       /* lekko fioletowo-białe */
+  --card-foreground:    oklch(0.12 0.04 300);
+
+  --popover:            oklch(0.97 0.012 305);
+  --popover-foreground: oklch(0.12 0.04 300);
+
+  --primary:            oklch(0.2319 0.1147 300.981); /* #280449 – 17.4:1 z białym ✓ AAA */
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary:          oklch(0.94 0.02 305);
+  --secondary-foreground: oklch(0.2319 0.1147 300.981);
+
+  --muted:              oklch(0.94 0.02 305);
+  --muted-foreground:   oklch(0.38 0.06 300);        /* 5.2:1 na białym ✓ AA */
+
+  --accent:             oklch(0.92 0.03 305);
+  --accent-foreground:  oklch(0.2319 0.1147 300.981);
+
+  --destructive:        oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+
+  --border:             oklch(0.85 0.03 305);
+  --input:              oklch(0.92 0.02 305);
+  --ring:               oklch(0.2319 0.1147 300.981);
+
+  --chart-1: oklch(0.30 0.10 300);
+  --chart-2: oklch(0.45 0.10 300);
+  --chart-3: oklch(0.60 0.08 300);
+  --chart-4: oklch(0.75 0.06 300);
+  --chart-5: oklch(0.87 0.04 300);
+
+  --radius: 0.625rem;
+
+  --sidebar:                oklch(0.94 0.02 305);
+  --sidebar-foreground:     oklch(0.12 0.04 300);
+  --sidebar-primary:        oklch(0.2319 0.1147 300.981);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent:         oklch(0.90 0.03 305);
+  --sidebar-accent-foreground: oklch(0.2319 0.1147 300.981);
+  --sidebar-border:         oklch(0.85 0.03 305);
+  --sidebar-ring:           oklch(0.2319 0.1147 300.981);
+}
+
+/* ===== TRYB CIEMNY ===== */
+.dark {
   --background:         oklch(0.0875 0.0438 311.990); /* #05000A */
   --foreground:         oklch(0.9158 0.0001 263.283); /* #e3e3e3 – 16.2:1 ✓ AAA */
 
-  --card:               oklch(0.1570 0.0830 301.703); /* #140029 – sekcje */
+  --card:               oklch(0.1570 0.0830 301.703); /* #140029 */
   --card-foreground:    oklch(0.9158 0.0001 263.283);
 
   --popover:            oklch(0.1570 0.0830 301.703);
   --popover-foreground: oklch(0.9158 0.0001 263.283);
 
-  /* Primary: #280449 – ciemny fiolet SDC, używany TYLKO dla przycisków CTA */
-  /* Kontrast biały tekst na #280449 = 17.4:1 ✓ AAA */
-  --primary:            oklch(0.2319 0.1147 300.981); /* #280449 */
+  --primary:            oklch(0.2319 0.1147 300.981); /* #280449 – 17.4:1 z białym ✓ AAA */
   --primary-foreground: oklch(1 0 0);
 
-  /* Secondary – nieco jaśniejszy od karty */
   --secondary:          oklch(0.2050 0.0900 303.000);
   --secondary-foreground: oklch(0.9158 0.0001 263.283);
 
-  /* Muted – tło dla wyciszonych elementów */
   --muted:              oklch(0.2050 0.0900 303.000);
-  /* Muted-foreground: gray-200 equiv – opisy pól, hinty */
-  /* Kontrast na tle #05000A = 16.8:1 ✓ AAA, na karcie #140029 = 14.1:1 ✓ AAA */
-  --muted-foreground:   oklch(0.89 0 0);              /* ~gray-200 */
+  --muted-foreground:   oklch(0.89 0 0);              /* ~gray-200 – 16.8:1 ✓ AAA */
 
   --accent:             oklch(0.2200 0.0950 303.000);
   --accent-foreground:  oklch(0.9158 0.0001 263.283);
@@ -99,10 +131,9 @@
   --destructive:        oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Border – widoczny na ciemnym tle bez krzyczenia */
   --border:             oklch(0.3200 0.0900 303.000);
   --input:              oklch(0.2200 0.0950 303.000);
-  --ring:               oklch(0.2319 0.1147 300.981); /* = primary */
+  --ring:               oklch(0.2319 0.1147 300.981);
 
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.65 0 0);
@@ -112,8 +143,7 @@
 
   --radius: 0.625rem;
 
-  /* Sidebar/header – navbar SDC = #0d0119, ciemniejszy od kart */
-  --sidebar:                oklch(0.1288 0.0592 306.366); /* #0d0119 */
+  --sidebar:                oklch(0.1288 0.0592 306.366); /* #0d0119 – navbar SDC */
   --sidebar-foreground:     oklch(0.9158 0.0001 263.283);
   --sidebar-primary:        oklch(0.2319 0.1147 300.981);
   --sidebar-primary-foreground: oklch(1 0 0);
@@ -121,6 +151,23 @@
   --sidebar-accent-foreground: oklch(0.9158 0.0001 263.283);
   --sidebar-border:         oklch(0.3200 0.0900 303.000);
   --sidebar-ring:           oklch(0.2319 0.1147 300.981);
+}
+
+/* ===== WYSOKI KONTRAST (prefers-contrast: more) ===== */
+@media (prefers-contrast: more) {
+  :root {
+    --border:           oklch(0.2319 0.1147 300.981); /* primary jako border */
+    --ring:             oklch(0.2319 0.1147 300.981);
+    --muted-foreground: oklch(0.12 0.04 300);          /* pełny kontrast */
+    --input:            oklch(1 0 0);
+  }
+
+  .dark {
+    --border:           oklch(0.9158 0.0001 263.283);
+    --ring:             oklch(0.9158 0.0001 263.283);
+    --muted-foreground: oklch(1 0 0);
+    --input:            oklch(0.0875 0.0438 311.990);
+  }
 }
 
 @layer base {

@@ -1,9 +1,11 @@
 "use client"
 
 import React, { useState, useRef, useEffect } from "react"
+import { useTheme } from "next-themes"
 import Link from "next/link"
-import { ChevronDown, ExternalLink, Menu, X } from "lucide-react"
+import { ChevronDown, ExternalLink, Menu, X, Sun, Moon, Monitor } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const BASE = "https://siec-dostepnosci-cyfrowej.github.io/sdc"
 const APP_URL = "https://wojsmol.github.io/sdc-generatory"
@@ -82,6 +84,46 @@ function Dropdown({ label, items }: { label: string; items: { label: string; hre
   )
 }
 
+
+function ThemeToggle() {
+  const { theme, setTheme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return <div className="h-9 w-9" aria-hidden="true" />
+
+  const cycle = () => {
+    if (theme === "system") setTheme(resolvedTheme === "dark" ? "light" : "dark")
+    else if (theme === "dark") setTheme("light")
+    else setTheme("dark")
+  }
+
+  const label =
+    theme === "dark" ? "Tryb ciemny – przełącz na jasny" :
+    theme === "light" ? "Tryb jasny – przełącz na systemowy" :
+    "Tryb systemowy – przełącz na ciemny"
+
+  const Icon =
+    theme === "dark" ? Moon :
+    theme === "light" ? Sun :
+    Monitor
+
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      onClick={cycle}
+      aria-label={label}
+      title={label}
+      className="h-9 w-9 text-foreground hover:text-primary"
+    >
+      <Icon className="h-5 w-5" aria-hidden="true" />
+    </Button>
+  )
+}
+
 interface AppLayoutProps {
   children: React.ReactNode
   title: string
@@ -132,16 +174,19 @@ export function AppLayout({ children, title, description }: AppLayoutProps) {
             </a>
           </nav>
 
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden p-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground"
-            onClick={() => setMobileOpen(p => !p)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav"
-            aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            {/* Mobile hamburger */}
+            <button
+              className="md:hidden p-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground"
+              onClick={() => setMobileOpen(p => !p)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-nav"
+              aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile nav */}
