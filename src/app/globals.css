@@ -48,42 +48,61 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Paleta SDC Generatory
+ * Źródło: custom.css Docusaurus SDC
+ *
+ * Tryb ciemny (domyślny):
+ *   bg:      #05000A  – główne tło
+ *   surface: #0d0119  – navbar SDC
+ *   card:    #140029  – sekcje/karty
+ *   primary: #280449  – przycisk CTA (ciemny fiolet, biały tekst 17.4:1 ✓ AAA)
+ *   tekst:   #e3e3e3  – SDC content color
+ *
+ * Problem oryginalnego SDC który tu naprawiamy:
+ *   - light: primary #280449 OK, ale secondary/muted za jasne na białym
+ *   - dark:  primary #E2C7F4 (lawendowy) nie nadaje się na przycisk – używamy #280449
+ *   - b&w:   brak rozróżnienia – kontrast border+shadow rozwiązuje
+ */
+
 :root {
-  /*
-   * Paleta SDC
-   * Primary: #551049 (bordowo-fioletowy) – zachowany dla przycisków i akcentów
-   * Motyw: ciemny jako domyślny
-   */
-  --sdc-primary: oklch(0.3190 0.1203 336.147); /* #551049 */
+  /* === TRYB CIEMNY JAKO DOMYŚLNY === */
 
-  /* Tło: #05000A, sekcje/karty: #140029 */
+  /* Tła – zgodne z SDC dark */
   --background:         oklch(0.0875 0.0438 311.990); /* #05000A */
-  --foreground:         oklch(0.95 0 0);               /* biały tekst: 20.8:1 ✓ AAA */
+  --foreground:         oklch(0.9158 0.0001 263.283); /* #e3e3e3 – 16.2:1 ✓ AAA */
 
-  --card:               oklch(0.1570 0.0830 301.703); /* #140029 */
-  --card-foreground:    oklch(0.95 0 0);
+  --card:               oklch(0.1570 0.0830 301.703); /* #140029 – sekcje */
+  --card-foreground:    oklch(0.9158 0.0001 263.283);
 
   --popover:            oklch(0.1570 0.0830 301.703);
-  --popover-foreground: oklch(0.95 0 0);
+  --popover-foreground: oklch(0.9158 0.0001 263.283);
 
-  /* Primary = SDC #551049 – przyciski, akcenty */
-  --primary:            var(--sdc-primary);
-  --primary-foreground: oklch(1 0 0);             /* biały tekst na primary: 13.5:1 ✓ AAA */
+  /* Primary: #280449 – ciemny fiolet SDC, używany TYLKO dla przycisków CTA */
+  /* Kontrast biały tekst na #280449 = 17.4:1 ✓ AAA */
+  --primary:            oklch(0.2319 0.1147 300.981); /* #280449 */
+  --primary-foreground: oklch(1 0 0);
 
-  --secondary:          oklch(0.20 0.05 305);
-  --secondary-foreground: oklch(0.95 0 0);
+  /* Secondary – nieco jaśniejszy od karty */
+  --secondary:          oklch(0.2050 0.0900 303.000);
+  --secondary-foreground: oklch(0.9158 0.0001 263.283);
 
-  --muted:              oklch(0.20 0.05 305);
-  --muted-foreground:   oklch(0.89 0 0);          /* gray-200: 16.8:1 na tle ✓ AAA */
+  /* Muted – tło dla wyciszonych elementów */
+  --muted:              oklch(0.2050 0.0900 303.000);
+  /* Muted-foreground: gray-200 equiv – opisy pól, hinty */
+  /* Kontrast na tle #05000A = 16.8:1 ✓ AAA, na karcie #140029 = 14.1:1 ✓ AAA */
+  --muted-foreground:   oklch(0.89 0 0);              /* ~gray-200 */
 
-  --accent:             oklch(0.22 0.06 305);
-  --accent-foreground:  oklch(0.95 0 0);
+  --accent:             oklch(0.2200 0.0950 303.000);
+  --accent-foreground:  oklch(0.9158 0.0001 263.283);
 
   --destructive:        oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
 
-  --border:             oklch(0.28 0.06 305);
-  --input:              oklch(0.22 0.06 305);
-  --ring:               var(--sdc-primary);
+  /* Border – widoczny na ciemnym tle bez krzyczenia */
+  --border:             oklch(0.3200 0.0900 303.000);
+  --input:              oklch(0.2200 0.0950 303.000);
+  --ring:               oklch(0.2319 0.1147 300.981); /* = primary */
 
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.65 0 0);
@@ -93,14 +112,15 @@
 
   --radius: 0.625rem;
 
-  --sidebar:                oklch(0.0875 0.0438 311.990); /* = background, header ciemny */
-  --sidebar-foreground:     oklch(0.95 0 0);
-  --sidebar-primary:        var(--sdc-primary);
+  /* Sidebar/header – navbar SDC = #0d0119, ciemniejszy od kart */
+  --sidebar:                oklch(0.1288 0.0592 306.366); /* #0d0119 */
+  --sidebar-foreground:     oklch(0.9158 0.0001 263.283);
+  --sidebar-primary:        oklch(0.2319 0.1147 300.981);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent:         oklch(0.1570 0.0830 301.703);
-  --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border:         oklch(0.28 0.06 305);
-  --sidebar-ring:           var(--sdc-primary);
+  --sidebar-accent-foreground: oklch(0.9158 0.0001 263.283);
+  --sidebar-border:         oklch(0.3200 0.0900 303.000);
+  --sidebar-ring:           oklch(0.2319 0.1147 300.981);
 }
 
 @layer base {
